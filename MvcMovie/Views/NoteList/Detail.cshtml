@@ -1,0 +1,313 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+
+<html>
+<head>
+    <title>English Note</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="@Url.Content("~/Content/main.css")" rel="stylesheet" type="text/css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+</head>
+<body class="landing">
+    <!-- body --!>
+
+        <!-- Page Wrapper -->
+    <div id="page-wrapper">
+
+        <!-- Header -->
+        <header id="header" class="alt">
+            <!--<h1><a href="index.html">English</a></h1>-->
+            <button onclick="save()" type="button"> save </button>
+            <button onclick="prebtn()" type="button"> pre </button>
+            <button onclick="nextbtn()" type="button"> next </button>
+            <nav id="nav">
+                <ul>
+                    <li class="special">
+                        <a href="#menu" class="menuToggle"><span>Menu</span></a>
+                        <div id="menu">
+                            <ul>
+                                <li><a href="@Url.Action("Index", "NoteList")">Home</a></li>
+                                <li><a href="@Url.Action("Word", "NoteList")">Words</a></li>
+                                <li><a href="@Url.Action("Sentences", "NoteList")">Sentences</a></li>
+                                <li><a href="@Url.Action("Phases", "NoteList")">Phases</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+
+        <section id="banner">
+            <div class="inner">
+            </div>
+
+        </section>
+
+        <section id="three" class="wrapper style3 special">
+            <div class="inner">
+
+                <header class="major"></header>
+                <ul class="features"></ul>
+            </div>
+        </section>
+
+
+    </div>
+
+    <div id="backCoverMsg"><p>save to homepage</p></div>
+
+    <script src="@Url.Content("~/assets/js/jquery.scrollex.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery.scrolly.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/skel.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/util.js")"></script>
+    <script src="@Url.Content("~/assets/js/main.js")"></script>
+    <script src="@Url.Content("~/assets/js/DataList.js")"></script>
+
+
+</body>
+
+<script type="text/javascript">
+
+
+//儲存目前的位置
+function save(){
+
+	var _type = $('#wType').val();
+
+	if(_type == 'W'){
+		localStorage.lastWord = $('#banner .inner h2').text();
+		localStorage.lastWordType = $('#wType').val();
+		var d = new Date().getDate();
+		var m = new Date().getMonth() + 1; //Month from 0 to 11
+		var y = new Date().getFullYear();
+		localStorage.indexWordW = nIndex;
+		localStorage.lastTimeWord = '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+
+	}
+	else if (_type == 'S'){
+	 	localStorage.lastSentence = $('#banner .inner h2').text();
+		localStorage.lastSentenceType = 'S';
+		var d = new Date().getDate();
+		var m = new Date().getMonth() + 1; //Month from 0 to 11
+		var y = new Date().getFullYear();
+		localStorage.indexWordS = nIndex;
+		localStorage.lastTimeSentence = '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+	}
+	else{
+		localStorage.lastphase = $('#banner .inner h2').text();
+		localStorage.lastphaseType = $('#wType').val();
+		var d = new Date().getDate();
+		var m = new Date().getMonth() + 1;
+		var y = new Date().getFullYear();
+		localStorage.indexWordP = nIndex;
+		localStorage.lastTimePhase = '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+	}
+
+	$("#backCoverMsg").stop(true, true).fadeIn();
+	$("#backCoverMsg").stop(true, true).fadeOut(3000);
+
+}
+
+
+	var parameters = location.search.substring(1).split("&");
+
+    var temp = parameters[0].split("=");
+    l = unescape(temp[1]);
+
+	var tempindex = parameters[1].split("=");
+    nowIndex = unescape(tempindex[1]);
+
+    var val = DataList[nowIndex];
+
+	var nIndex = parseInt(nowIndex);
+   	var val = DataList[nIndex];
+ 	var Detailtype = val.WordType;
+
+ 	var str = '<a id="nclick" href="Detail.html?name=' + val.Word + '&pindex='+nIndex+'"></a>'
+ 	$('#three .inner').html(str);
+
+//下一個
+function nextbtn(){
+	var flag = true;
+	while(flag){
+		nIndex = parseInt(nIndex) + parseInt(1);
+		val = DataList[nIndex];
+		if (val ==undefined) { return;}
+		if(val.WordType != '' || val.WordType != 'undefined'){
+			if(Detailtype == val.WordType){
+				flag =false;
+			}
+		}
+	}
+
+
+	output = '<ul class="features">';
+	outputbanner = ''
+	  if(val.Remark != ''){
+		output += ' <li class="icon fa-flag-o">' ;
+		output += '<p>' + val.Remark + '</p>';
+		output += '</li>';
+	  }
+	if(val.Sentence != ''){
+		output += ' <li class="icon fa-flag-o">' ;
+		output += '<p>' + val.Sentence + '</p>';
+		output += '</li>';
+	}
+	if(val.image != ''){
+		output += ' <li class="icon fa-flag-o">' ;
+		output += '<img src='+val.image+' alt="" />';
+		output += '</li>';
+	}
+
+	outputbanner +='<h2>'+ val.Word +'</h2>';
+	if(val.KK !=='')
+		outputbanner +='<div id= "kkname">'+ val.KK +'</p></div>';
+	if(val.Explain !== '')
+		outputbanner +='<p>'+ val.Explain +'</p>';
+	if(val.CreateDate !== '')
+		outputbanner +='<p>'+ val.CreateDate +'</p>';
+	if(val.pastpp !== '')
+		outputbanner +='<p>'+ val.pastpp +'</p>';
+	if(val.VoiceLink !=='')
+		outputbanner +='<a href = '+val.VoiceLink+'>VoiceLink</a>';
+
+	if(val.WordType !=='')
+ 		outputbanner +='<input type="hidden" id = "wType" value= '+val.WordType+'>';
+
+	isfind = true;
+
+	output += '</ul>';
+	//加入inner
+	//加入明細
+	$('#three .inner').html(output);
+	$('#banner .inner').html(outputbanner);
+
+}
+
+//上一個
+function prebtn(){
+
+	var flag = true;
+	while(flag){
+		nIndex = parseInt(nIndex) - parseInt(1);
+		val = DataList[nIndex];
+		if (val ==undefined) { return;}
+		if(val.WordType != '' || val.WordType != 'undefined'){
+			if(Detailtype == val.WordType){
+				flag =false;
+			}
+		}
+	}
+
+	output = '<ul class="features">';
+	outputbanner = ''
+	if(val.Remark != ''){
+		output += ' <li class="icon fa-flag-o">' ;
+		output += '<p>' + val.Remark + '</p>';
+		output += '</li>';
+	}
+	if(val.Sentence != ''){
+		output += ' <li class="icon fa-flag-o">' ;
+		output += '<p>' + val.Sentence + '</p>';
+		output += '</li>';
+	}
+	if(val.image != ''){
+		output += ' <li class="icon fa-flag-o">' ;
+		output += '<img src='+val.image+' alt="" />';
+		output += '</li>';
+	}
+
+	outputbanner +='<h2>'+ val.Word +'</h2>';
+	//kk 音標
+	if(val.KK !=='')
+		outputbanner +='<div id= "kkname">'+ val.KK +'</p></div>';
+	//註解
+	if(val.Explain !== '')
+		outputbanner +='<p>'+ val.Explain +'</p>';
+	//日期
+	if(val.CreateDate !== '')
+		outputbanner +='<p>'+ val.CreateDate +'</p>';
+	//過去是
+	if(val.pastpp !== '')
+		outputbanner +='<p>'+ val.pastpp +'</p>';
+	//字典連結
+	if(val.VoiceLink !=='')
+		outputbanner +='<a href = '+val.VoiceLink+'>VoiceLink</a>';
+
+
+	//type : word/sentence/phase
+	//
+	if(val.WordType !=='')
+		outputbanner +='<input type="hidden" id = "wType" value= '+val.WordType+'>';
+	isfind = true;
+	output += '</ul>';
+	$('#three .inner').html(output); //remark
+	$('#three .inner').html(output);
+	$('#banner .inner').html(outputbanner);
+
+}
+
+
+	var regex = new RegExp(l, "i");
+	var output = '<ul class="features">';
+	var outputbanner = ''
+	var count = 1;
+	var isfind = false;
+
+	if(val.Remark != ''){
+		output += ' <li class="icon fa-flag-o">' ;
+		output += '<p>' + val.Remark + '</p>';
+		output += '</li>';
+	}
+	if(val.Sentence != ''){
+		output += ' <li class="icon fa-flag-o">' ;
+		output += '<p>' + val.Sentence + '</p>';
+		output += '</li>';
+	}
+	if(val.image != ''){
+		output += ' <li class="icon fa-flag-o">' ;
+		output += '<img src='+val.image+' alt="" />';
+		output += '</li>';
+	}
+	//word
+	//
+	outputbanner +='<h2>'+ val.Word +'</h2>';
+	if(val.KK !=='')
+		outputbanner +='<div id= "kkname">'+ val.KK +'</p></div>';
+	//解釋
+	if(val.Explain !== '')
+		outputbanner +='<p>'+ val.Explain +'</p>';
+	//日期
+	if(val.CreateDate !== '')
+		outputbanner +='<p>'+ val.CreateDate +'</p>';
+	//過去是
+	if(val.pastpp !== '')
+		outputbanner +='<p>'+ val.pastpp +'</p>';
+	//字典蓮姐
+	if(val.VoiceLink !=='')
+		outputbanner +='<a href = '+val.VoiceLink+'>VoiceLink</a>';
+
+	//word/sentence /phase
+	if(val.WordType !=='')
+		outputbanner +='<input type="hidden" id = "wType" value= '+val.WordType+'>';
+
+	isfind = true;
+
+	output += '</ul>';
+	$('#three .inner').html(output);
+	$('#banner .inner').html(outputbanner);
+
+
+</script>
+
+
+<script type="text/babel">
+
+</script>
+</html>

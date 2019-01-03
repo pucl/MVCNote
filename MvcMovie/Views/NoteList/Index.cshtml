@@ -1,0 +1,263 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+
+<html>
+<head>
+    <title>English Note</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="@Url.Content("~/assets/css/font-awesome.min.css")"></script>
+
+    <script src="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,800,800italic"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link href="@Url.Content("~/Content/main.css")" rel="stylesheet" type="text/css" />
+
+
+
+</head>
+<body class="landing">
+
+    <!-- Page Wrapper -->
+    <div id="page-wrapper">
+
+        <!-- Header -->
+        <header id="header" class="alt">
+            <!-- <h1 onclick="save()"><a href="index.html">English</a></h1>-->
+            <!--<div onclick="save()"> <h1 >English</h1></div>-->
+            <!--<button onclick="save()" type="button"> save </button>-->
+            <h1><a href="index.html">English</a></h1>
+            <nav id="nav">
+                <ul>
+                    <li class="special">
+                        <a href="#menu" class="menuToggle"><span>Menu</span></a>
+                        <div id="menu">
+                            <ul>
+                                <li><a href="@Url.Action("Index", "NoteList")">Home</a></li>
+                                <li><a href="@Url.Action("Word", "NoteList")">Words</a></li>
+                                <li><a href="@Url.Action("Sentences", "NoteList")">Sentences</a></li>
+                                <li><a href="@Url.Action("Phases", "NoteList")">Phases</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+
+        <!-- Banner -->
+        <section id="banner">
+            <div class="inner">
+                <h2>Search</h2>
+                <h3>
+                    <a href="Word.html?#upstairs">condominium</a>
+                </h3>
+
+            </div>
+            <div id='output'>
+
+
+            </div>
+
+            <div class="form-group">
+                <h3>search : </h3><input type="input" class="form-control input-lg" id="txt-search" placeholder="Type your search character">
+            </div>
+            <div id="filter-records"></div>
+
+        </section>
+
+        <section id="one" class="wrapper style1 special">
+            <div class="inner">
+
+            </div>
+        </section>
+
+
+    </div>
+
+
+    <script src="@Url.Content("~/assets/js/jquery.scrollex.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery.scrolly.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/skel.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/util.js")"></script>
+    <script src="@Url.Content("~/assets/js/main.js")"></script>
+    <script src="@Url.Content("~/assets/js/DataList.js")"></script>
+
+
+</body>
+
+<script type="text/javascript">
+
+
+
+
+
+$(document).ready(function(){
+var outputbanner = ''
+	if (typeof(Storage) !== "undefined") {
+	    // Store
+	    //localStorage.setItem("lastWord", "Smith");
+	    // Retrieve
+	  var _lastWord =   localStorage.getItem("lastWord");
+	   var _lastWordType=  localStorage.getItem("lastWordType");
+	   var _lastTime =  localStorage.getItem("lastTimeWord");
+	    var _lastIndexW =  localStorage.getItem("indexWordW");
+ 		outputbanner = '';
+ 		if (_lastWord === '' && _lastWordType ==='' && _lastTime===''){
+ 			outputbanner += '<h3>No Record</h3>';
+ 		}else{
+ 			if(_lastWord !== ''){
+ 				outputbanner += '==============================='
+ 				switch(_lastWordType){
+
+					 case 'W':
+	 					outputbanner += '<p>Last reading word: ' ;
+					 // outputbanner += '<a name ='+ _lastWord +'></a>'
+                        outputbanner += '<a href="Detail?name=' + _lastWord  + '&pindex='+_lastIndexW+ '">'+ _lastWord +'</a>';
+					   outputbanner += '</p>';
+
+					   	//outputbanner += '<h3>'+ _lastWord +'</h3>';
+	 					 outputbanner += '<p>go to List:' ;
+					  //outputbanner += '<a name ='+ _lastWord +'></a>'
+					  outputbanner += '<a href="word?#' + _lastIndexW+'">'+ _lastWord + '</a>'
+					   outputbanner += '</p>';
+					   break;
+
+
+ 				}
+
+
+ 			}
+
+ 			if(_lastTime !=='' && _lastTime!=null){
+ 				 outputbanner += '<p>reading time: ' ;
+				  //outputbanner += '<a name ='+ _lastWord +'></a>'
+				  outputbanner +=  _lastTime ;
+				   outputbanner += '</p>';
+ 			}
+
+ 		}
+
+
+
+		var _lastPhase =   localStorage.getItem("lastphase");
+	   var _lastPhaseType=  localStorage.getItem("lastphaseType");
+	   var _lastTimePhase =  localStorage.getItem("lastTimePhase");
+	    var _lastIndexP =  localStorage.getItem("indexWordP");
+
+ 		if (_lastPhase == '' && _lastPhaseType =='' && _lastTimePhase==''){
+ 			outputbanner += '<h3>No Record</h3>';
+ 		}else{
+ 			if(_lastWord !== ''){
+ 				outputbanner += '==============================='
+ 				switch(_lastPhaseType){
+
+					  case 'P' :
+							outputbanner += '<p>Last reading phase: ' ;
+						 // outputbanner += '<a name ='+ _lastWord +'></a>'
+						  outputbanner += '<a href="Detail?name=' + _lastPhase + '&pindex='+_lastIndexP+ '">'+ _lastPhase +'</a>';
+						   outputbanner += '</p>';
+
+		 				    outputbanner += '<p>go to List:' ;
+						 
+						  outputbanner += '<a href="phase?#' + _lastIndexP+'">'+ _lastPhase + '</a>'
+						   outputbanner += '</p>';
+						   break;
+
+ 				}
+
+
+ 			}
+
+ 			if(_lastTimePhase !=='' && _lastTimePhase != null){
+ 				 outputbanner += '<p>reading time: ' ;
+				  //outputbanner += '<a name ='+ _lastWord +'></a>'
+				  outputbanner +=  _lastTimePhase ;
+				   outputbanner += '</p>';
+ 			}
+
+ 		}
+
+
+
+		var _lastSentence =   localStorage.getItem("lastSentence");
+	   var _lastSentenceType=  localStorage.getItem("lastSentenceType");
+	   var _lastTimeSentence =  localStorage.getItem("lastTimeSentence");
+	    var _lastIndexS =  localStorage.getItem("indexWordS");
+ 		//outputbanner = '';
+ 		if (_lastSentence === '' && _lastSentenceType ==='' && _lastTimeSentence===''){
+ 			outputbanner += '<h3>No Record</h3>';
+ 		}else{
+ 			if(_lastSentenceType !== ''){
+				outputbanner += '==============================='
+ 				switch(_lastSentenceType){
+ 					case 'S':
+	 					outputbanner += '<p>Last reading sentence: ' ;
+
+					  outputbanner += '<a href="Detail?name=' + _lastSentence + '&pindex='+_lastIndexS+ '">'+ _lastSentence +'</a>';
+					   outputbanner += '</p>';
+
+	 					 outputbanner += '<p>go to List:' ;
+					  outputbanner += '<a href="Sentence?#' + _lastIndexS+'">'+ _lastSentence + '</a>'
+					   outputbanner += '</p>';
+					   break;
+
+ 				}
+
+ 			}
+
+ 			if(_lastTimeSentence !=='' && _lastTimeSentence != null){
+ 				 outputbanner += '<p>reading time: ' ;
+				  //outputbanner += '<a name ='+ _lastWord +'></a>'
+				  outputbanner +=  _lastTimeSentence ;
+				   outputbanner += '</p>';
+ 			}
+
+ 		}
+
+
+	} else {
+	    document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
+	}
+	$('#banner .inner').html(outputbanner);
+
+});
+
+$('#txt-search').keyup(function(){
+            var searchField = $(this).val();
+			if(searchField === '')  {
+				$('#filter-records').html('');
+				return;
+			}
+
+            var regex = new RegExp(searchField, "i");
+            var output = '<header class="major">';
+            var count = 1;
+			  $.each(DataList, function(key, val){
+			  	var nkey = Object.keys(DataList)[key];
+				if ((val.Word.search(regex) != -1)) {
+					
+	  					output += '<h3>' ;
+					  output += '<a href="Detail?name=' + val.Word + '&pindex='+nkey+ '"</a>'+ val.Word
+					   output += '</h3></br>';
+
+				}else if ((val.Remark.search(regex) != -1)){
+					
+					output += '<h3>' ;
+				  	output += '<a href="Detail?name=' + val.Word + '&pindex='+nkey+ '"</a>'+ val.Word
+				   	output += '</h3></br>';
+				   
+				}
+			  });
+			  output += '</header>';
+			  $('#one .inner').html(output);
+        });
+</script>
+
+
+<script type="text/babel">
+
+</script>
+</html>

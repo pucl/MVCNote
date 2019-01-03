@@ -1,0 +1,168 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+
+<html>
+<head>
+    <title>English Note</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link href="@Url.Content("~/Content/main.css")" rel="stylesheet" type="text/css" />
+
+</head>
+<body class="landing">
+
+    <!-- Page Wrapper -->
+    <div id="page-wrapper">
+
+        <!-- Header -->
+        <header id="header" class="alt">
+            <h1><a href="index.html">English</a></h1>
+            <nav id="nav">
+                <ul>
+                    <li class="special">
+                        <a href="#menu" class="menuToggle"><span>Menu</span></a>
+                        <div id="menu">
+                            <ul>
+                                <li><a href="@Url.Action("Index", "NoteList")">Home</a></li>
+                                <li><a href="@Url.Action("Word", "NoteList")">Words</a></li>
+                                <li><a href="@Url.Action("Sentences", "NoteList")">Sentences</a></li>
+                                <li><a href="@Url.Action("Phases", "NoteList")">Phases</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+
+        <!-- Banner -->
+        <section id="banner">
+            <div class="inner">
+                <h2>Words</h2>
+
+            </div>
+            <div id='output'></div>
+
+        </section>
+
+        <!-- One -->
+        <section id="one" class="wrapper style1 special">
+            <div class="inner">
+                <header class="major"></header>
+
+            </div>
+        </section>
+
+
+        <div id="container">
+        </div>
+
+
+    </div>
+
+
+    <script src="@Url.Content("~/assets/js/jquery.scrollex.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery.scrolly.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/skel.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/util.js")"></script>
+    <script src="@Url.Content("~/assets/js/main.js")"></script>
+    <script src="@Url.Content("~/assets/js/DataList.js")"></script>
+
+
+</body>
+
+<script type="text/javascript">
+
+
+$(document).ready(function(){
+
+	//default chinse
+	//var _sortType = '01';	//mark
+  	var _sortType =  localStorage.getItem("sortType");
+
+  	//get type  which one
+	if (_sortType == '' || _sortType == 'undefined' || _sortType == undefined )
+		_sortType = '01';
+
+	switch(_sortType){
+		case "01":
+			break;
+		case "02":
+			break;
+		case "03":
+
+			break;
+	}
+
+	var test=''; //mark
+	var _SettingShowChinese =  localStorage.getItem("SettingShowChinese");
+	if(_SettingShowChinese == '' || _SettingShowChinese == 'undefined' || _SettingShowChinese == undefined )
+		_SettingShowChinese = 'N';
+
+	   //show chinese
+	   //does shoe chinese
+	   if(_SettingShowChinese  == "Y")
+	   {
+            var output = '<header class="major">';
+            var outputbanner = ''
+            var count = 1;
+			  $.each(DataList, function(key, val){
+			  	//words
+				if ((val.WordType == 'W')) {
+
+				  output += '<p>' ;
+				  output += '<a name ='+ val.Word +'></a>'
+				  output += '<a href="Detail?name=' + val.Word + '"</a>'+ val.Word + ' '  + val.KK + ' '  + val.Explain
+				   output += '</p></br>';
+
+				}
+				//mark ============================
+
+				//mark ==============================
+				//phase
+				//mark ==============================
+
+				//mark ==============================
+
+			  });
+
+
+		}else
+		{
+			//only show english
+			var output = '<header class="major">';
+			var outputbanner = ''
+	        var count = 1;
+			$.each(DataList, function(key, val){
+				if ((val.WordType == 'W')) {
+
+					var nkey = Object.keys(DataList)[key];
+					output += '<p>' ;
+					output += '<a name ='+ nkey +'></a>'
+                    output += '<a href="Detail?name=' + val.Word + '&pindex='+nkey+'"</a>'+ val.Word
+					output += '</p></br>';
+
+				}
+			});
+
+			//get shoe word
+
+		}
+		output += '</header>';
+		$('#one .inner').html(output);
+
+		//mark
+		//$('.#one .inner').html(output);
+		// can miss
+
+});
+
+
+</script>
+
+
+</html>
